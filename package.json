@@ -1,1 +1,27 @@
-
+{
+  "name": "comp3810sef-group5-cha-chaan-teng-menu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hong Kong cha chaan teng menu aggregation manager built with Express.js, EJS and MongoDB.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "dev:demo": "node --watch server.js --demo",
+    "test": "node server.js --smoke-test",
+    "seed:menu": "node server.js --seed"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.5",
+    "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0"
+  }
+}
