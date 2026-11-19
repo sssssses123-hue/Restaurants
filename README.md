@@ -31,7 +31,7 @@ Group: 5
 | Login/logout | Facebook OAuth through Passport |
 | Session-protected CRUD web pages | Facebook OAuth login and create, read, update and delete routes |
 | RESTful CRUD API | `GET`, `POST`, `PUT`, `DELETE` under `/api/menu` |
-| Beginner-friendly README | Project, group, file and operation documentation |
+
 
 ## 4. Project files
 
@@ -229,7 +229,7 @@ Group number: 5
 | Login／Logout | Passport Facebook OAuth |
 | Session 保護 CRUD 網頁 | Facebook OAuth 登入及新增、查看、修改、刪除路由 |
 | RESTful CRUD API | `/api/menu` 下的 GET、POST、PUT、DELETE 1|
-| 小白可用 README | 專案、小組、檔案及操作指南 |
+
 
 ## 4. 專案檔案
 
