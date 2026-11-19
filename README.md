@@ -228,7 +228,7 @@ Group number: 5
 | EJS 或自訂 UI | 單一 EJS 模板及響應式 CSS |
 | Login／Logout | Passport Facebook OAuth |
 | Session 保護 CRUD 網頁 | Facebook OAuth 登入及新增、查看、修改、刪除路由 |
-| RESTful CRUD API | `/api/menu` 下的 GET、POST、PUT、DELETE 1|
+| RESTful CRUD API | `/api/menu` 下的 GET、POST、PUT、DELETE |
 
 
 ## 4. 專案檔案
