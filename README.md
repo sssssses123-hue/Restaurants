@@ -48,20 +48,102 @@ comp3810sef_group5/
 ```
 
 
-## 5. Quick start
+## 5. Facebook login
 
-The instructions in this article assume the use of the Ubuntu Terminal. Install Node.js 18 or higher, open the terminal, and navigate to the project folder:
+Facebook OAuth has been verified manually. The login flow completes, the authenticated dashboard loads at `http://localhost:8099`, and logout is available from the page header.
+
+The private submission already includes the required settings in `.env.local`:
+
+- `AUTH_MODE=facebook`
+- Valid Facebook App ID and App Secret
+- OAuth callback URL: `http://localhost:8099/auth/facebook/callback`
+
+Start the application and select the Facebook login button. The current implementation confirms identity but does not yet apply a manager allowlist.
+
+The Facebook App Secret must never appear in source code, screenshots or README content. It exists only inside the privately submitted `.env.local`.
+
+## 6. Quick start and testing
+
+All commands in this guide use an Ubuntu terminal. The quick start covers application startup, Facebook login, the website, web CRUD and the REST API.
+
+| Test area | How it is checked |
+| --- | --- |
+| Login and website | Facebook login in the browser |
+| Web CRUD | Create, search, edit and delete items using the website |
+| REST API | `curl` requests to `/api/menu` |
+| Automated test | `npm test` checks web CRUD and REST CRUD together |
+
+### Step 1: Install and start
+
+Install Node.js 18 or later, then run:
 
 ```bash
 cd ~/comp3810sef_group5
 node --version
 npm install
-npm start
+npm run dev
 ```
 
-Open `http://localhost:8099` in your browser and log in using Facebook authentication to access the Restaurant Management System.
+The private submission already includes `.env.local`. The application should report MongoDB mode and then listen on `http://localhost:8099`. Keep this terminal running.
 
-Run the complete login, web CRUD and REST API test:
+### Step 2: Log in and view the website
+
+1. Open `http://localhost:8099`.
+2. Select the Facebook login button.
+3. Complete the Facebook login flow.
+4. Confirm that the menu dashboard appears and the three categories are visible.
+
+The website is protected by the Facebook session. Opening a protected page without logging in redirects to `/login`.
+
+### Step 3: Test website CRUD
+
+Use the website interface; these actions do not use `/api/menu`.
+
+1. Select **新增菜式**.
+2. Create a test item named `測試西多士` with category `bread` and price `30`.
+3. Search for `測試西多士` and confirm that the item appears.
+4. Open the item, select **編輯**, change the price to `32`, and save.
+5. Open the item again, select **刪除菜式**, and confirm the deletion.
+
+This verifies create, read, update and delete through the website.
+
+### Step 4: Test the REST API
+
+Open a second Ubuntu terminal while `npm run dev` is still running. The REST API uses JSON requests to `/api/menu`; it does not use the website forms.
+
+Read the current records:
+
+```bash
+curl http://localhost:8099/api/menu
+```
+
+Create a temporary record:
+
+```bash
+curl -X POST http://localhost:8099/api/menu \
+  -H "Content-Type: application/json" \
+  -d '{"nameZh":"API測試咖啡","nameEn":"API Test Coffee","category":"drink","price":22}'
+```
+
+The response contains `data.id`. Copy that ID into the next command, then test read, update and delete:
+
+```bash
+ITEM_ID="paste-the-returned-id-here"
+
+curl http://localhost:8099/api/menu/$ITEM_ID
+
+curl -X PUT http://localhost:8099/api/menu/$ITEM_ID \
+  -H "Content-Type: application/json" \
+  -d '{"price":24,"available":true}'
+
+curl -X DELETE http://localhost:8099/api/menu/$ITEM_ID
+```
+
+Successful create, read, update and delete operations return HTTP `201`, `200`, `200` and `200` respectively. A missing item returns `404`.
+
+### Step 5: Run the automated test
+
+The automated test checks the website CRUD routes and REST API together without changing MongoDB data:
 
 ```bash
 npm test
@@ -73,9 +155,17 @@ The successful result is:
 Smoke test passed: login, web CRUD, REST CRUD and filtering.
 ```
 
-Before using Facebook or MongoDB mode, follow section 6 to create the local environment file. The demo command does not need Facebook or MongoDB credentials.
+### Optional: Run without Facebook or MongoDB
 
-## 6. Environment configuration and private submission
+The in-memory demo is useful for quick local testing:
+
+```bash
+npm run dev:demo
+```
+
+Open `http://localhost:8099` and select **Enter local test mode**. Changes in this mode are lost when the server stops.
+
+## 7. Environment configuration and private submission
 
 `server.js` loads environment variables from `.env.local` through `dotenv`; the application reads the values from `process.env`. For this course submission, `.env.local` is intentionally included so the project can be run without manually creating another configuration file. `.env.example` is not used in this workflow.
 
@@ -110,33 +200,38 @@ The values above are placeholders for documentation only. Do not copy the README
 .env
 .env.*
 !.env.local
-```.
+```
 
-## 7. Facebook login
+From the project directory, verify that Git does not ignore the file:
 
-1. Create a Facebook app and add Facebook Login.
-2. Add `http://localhost:8099/auth/facebook/callback` as a valid OAuth redirect URI.
-3. Fill the Facebook App ID and App Secret in `.env.local`.
-4. Keep `AUTH_MODE=facebook`.
-5. Start the normal server with `npm run dev`.
+```bash
+git check-ignore -v .env.local
+```
 
-The Facebook App Secret must never appear in source code, screenshots, README content or submitted files.
+No output means `.env.local` can be staged normally. `git check-ignore` exiting with status 1 also means it is not ignored. Stage it together with the private submission:
+
+```bash
+git add .env.local
+git status
+```
+
+Only commit and push after confirming that the remote repository is private. For a public deployment, use the hosting platform's secret settings and a separately prepared environment instead. `SESSION_SECRET` is mandatory when `NODE_ENV=production`.
 
 ## 8. Web operations
 
-- **Create:** select “新增菜式”, complete the form and save.
-- **Read:** search by Chinese name, English name, description or tag; filter by category and availability.
-- **Update:** open an item and select “編輯”; save the changes.
-- **Delete:** open an item, select “刪除菜式”, review the confirmation page and confirm.
-- **Logout:** use the logout button in the page header.
+The complete manual test is in section 6, step 3. Website forms use `/menu` and require a Facebook session; they do not use `/api/menu`.
 
-All CRUD pages redirect to the login page when no authenticated session exists.
+| Browser operation | Route used by the web interface | Login required? |
+| --- | --- | --- |
+| Dashboard and search | `GET /` | Yes |
+| Create form and submit | `GET /menu/new`, `POST /menu` | Yes |
+| View an item | `GET /menu/:id` | Yes |
+| Edit an item | `GET /menu/:id/edit`, `POST /menu/:id/edit` | Yes |
+| Delete an item | `GET /menu/:id/delete`, `POST /menu/:id/delete` | Yes |
 
 ## 9. REST API
 
-REST authentication is intentionally omitted because the course specification requires the API to be usable without authentication.
-
-Because `POST`, `PUT` and `DELETE` are also public, this API is suitable for the course demonstration but not for unrestricted public deployment.
+The executable `curl` test is in section 6, step 4. This is a JSON API for tools such as `curl`, not the website form interface. It is intentionally public for the course requirement, so it should not be exposed publicly without additional protection.
 
 | Operation | Method | Path |
 | --- | --- | --- |
@@ -146,23 +241,7 @@ Because `POST`, `PUT` and `DELETE` are also public, this API is suitable for the
 | Update | PUT | `/api/menu/:id` |
 | Delete | DELETE | `/api/menu/:id` |
 
-Useful filters:
-
-```text
-/api/menu?category=drink
-/api/menu?available=true
-/api/menu?q=奶茶
-```
-
-Create example using `curl.exe` on Windows:
-
-```powershell
-curl.exe -X POST http://localhost:8099/api/menu `
-  -H "Content-Type: application/json" `
-  -d "{\"nameZh\":\"熱咖啡\",\"nameEn\":\"Hot Coffee\",\"category\":\"drink\",\"price\":22}"
-```
-
-Required fields are `nameZh`, `nameEn`, `category` and `price`. Valid categories are `dish`, `drink` and `bread`.
+Required create fields are `nameZh`, `nameEn`, `category` and `price`. Valid categories are `dish`, `drink` and `bread`. Filters can be added as query parameters, for example `/api/menu?category=drink` or `/api/menu?q=奶茶`.
 
 ## 10. MongoDB import after approval
 
@@ -245,21 +324,102 @@ comp3810sef_group5/
 └── public/styles.css
 ```
 
+## 5. Facebook 登入
 
-## 5. 快速開始
+Facebook OAuth 已人手驗證：登入流程可以完成，登入後可看到 `http://localhost:8099` 的受保護網站，頁頭亦提供登出功能。
 
-本文操作以 Ubuntu Terminal 為準。安裝 Node.js 18 或以上，開啟終端機並進入專案資料夾：
+私人提交包已包含 `.env.local`，所需的 Facebook 設定包括：
+
+- `AUTH_MODE=facebook`
+- 有效的 Facebook App ID 及 App Secret
+- OAuth callback URL：`http://localhost:8099/auth/facebook/callback`
+
+啟動應用程式後按 Facebook 登入按鈕即可。現階段會驗證登入身份，但未加入管理員白名單。
+
+App Secret 不可出現在程式碼、截圖或 README 中；它只存在於私人提交的 `.env.local`。
+
+## 6. 快速開始與測試
+
+本文所有指令均以 Ubuntu Terminal 為準。快速開始會依次測試啟動應用程式、Facebook 登入、網站、網頁 CRUD 及 REST API。
+
+| 測試範圍 | 測試方式 |
+| --- | --- |
+| 登入及網站 | 在瀏覽器完成 Facebook 登入 |
+| 網頁 CRUD | 在網站新增、搜尋、修改及刪除菜式 |
+| REST API | 使用 `curl` 向 `/api/menu` 發出請求 |
+| 自動測試 | `npm test` 同時檢查網頁 CRUD 及 REST CRUD |
+
+### 第 1 步：安裝及啟動
+
+安裝 Node.js 18 或以上，然後執行：
 
 ```bash
 cd ~/comp3810sef_group5
 node --version
 npm install
-npm start
+npm run dev
 ```
 
-瀏覽器打開 `http://localhost:8099`，選擇Facebook驗證方式登入,即可看到餐廳管理系統
+私人提交包已包含 `.env.local`。啟動後應顯示 MongoDB 模式，並在 `http://localhost:8099` 提供網站。保持此 Terminal 運行。
 
-執行完整登入、網頁 CRUD 及 REST API 測試：
+### 第 2 步：登入並查看網站
+
+1. 開啟 `http://localhost:8099`。
+2. 按 Facebook 登入按鈕。
+3. 完成 Facebook 登入流程。
+4. 確認看到菜單總覽及三個分類。
+
+網站受 Facebook session 保護；未登入時開啟受保護頁面會跳至 `/login`。
+
+### 第 3 步：測試網頁 CRUD
+
+直接在網站介面操作；這部分**不使用** `/api/menu`。
+
+1. 按「新增菜式」。
+2. 新增 `測試西多士`，分類選 `麵包`，價格填 `30`。
+3. 搜尋 `測試西多士`，確認能顯示新增的菜式。
+4. 開啟該菜式，按「編輯」，把價格改為 `32` 並儲存。
+5. 再次開啟該菜式，按「刪除菜式」並確認刪除。
+
+以上步驟已測試網頁的新增、讀取、修改及刪除。
+
+### 第 4 步：測試 REST API
+
+保持 `npm run dev` 運行，另開一個 Ubuntu Terminal。REST API 使用 JSON 向 `/api/menu` 發出請求，不使用網站表單。
+
+先讀取現有資料：
+
+```bash
+curl http://localhost:8099/api/menu
+```
+
+新增一項臨時資料：
+
+```bash
+curl -X POST http://localhost:8099/api/menu \
+  -H "Content-Type: application/json" \
+  -d '{"nameZh":"API測試咖啡","nameEn":"API Test Coffee","category":"drink","price":22}'
+```
+
+回應內有 `data.id`。把該 ID 複製到下一段，再測試讀取、修改及刪除：
+
+```bash
+ITEM_ID="貼上新取得的id"
+
+curl http://localhost:8099/api/menu/$ITEM_ID
+
+curl -X PUT http://localhost:8099/api/menu/$ITEM_ID \
+  -H "Content-Type: application/json" \
+  -d '{"price":24,"available":true}'
+
+curl -X DELETE http://localhost:8099/api/menu/$ITEM_ID
+```
+
+新增、讀取、修改及刪除成功時分別會回傳 HTTP `201`、`200`、`200` 及 `200`；找不到資料則回傳 `404`。
+
+### 第 5 步：執行自動測試
+
+以下指令會同時檢查網頁 CRUD 路由及 REST API，而且不會改動 MongoDB 資料：
 
 ```bash
 npm test
@@ -271,9 +431,17 @@ npm test
 Smoke test passed: login, web CRUD, REST CRUD and filtering.
 ```
 
-使用 Facebook 或 MongoDB 模式前，請按第 6 節建立本機環境檔案。本機示範指令不需要 Facebook 或 MongoDB 憑證。
+### 可選：不使用 Facebook 或 MongoDB
 
-## 6. 環境設定與私人提交
+如只需快速測試，可改用記憶體示範模式：
+
+```bash
+npm run dev:demo
+```
+
+開啟 `http://localhost:8099`，按「進入本機測試模式」。此模式的修改會在伺服器停止後消失。
+
+## 7. 環境設定與私人提交
 
 `server.js` 會透過 `dotenv` 讀取 `.env.local`，再從 `process.env` 取得設定。本課程提交包會刻意包含 `.env.local`，讓專案毋須另外建立設定檔便可執行。`.env.example` 不再用於此流程。
 
@@ -310,31 +478,36 @@ MONGO_OPTIONS=retryWrites=true&w=majority
 !.env.local
 ```
 
-## 7. Facebook 登入
+可在專案資料夾執行以下指令，確認 Git 沒有忽略此檔案：
 
-1. 建立 Facebook App 並加入 Facebook Login。
-2. 把 `http://localhost:8099/auth/facebook/callback` 加入有效 OAuth redirect URI。
-3. 在 `.env.local` 填入 Facebook App ID 及 App Secret。
-4. 保持 `AUTH_MODE=facebook`。
-5. 使用 `npm run dev` 啟動正式模式。
+```bash
+git check-ignore -v .env.local
+```
 
-App Secret 不可出現在程式碼、截圖、README 或提交檔案中。
+沒有輸出即表示 `.env.local` 可以正常加入 Git；`git check-ignore` 以狀態碼 1 結束亦代表它沒有被忽略。在私人提交中可正常執行：
+
+```bash
+git add .env.local
+git status
+```
+
+確認遠端 repo 為私人後才可 commit 及 push。公開部署應改用在代管平台的 Secret 設定，並另行準備環境。當 `NODE_ENV=production` 時必須提供 `SESSION_SECRET`。
 
 ## 8. 網頁操作
 
-- **Create：** 按「新增菜式」，填表後儲存。
-- **Read：** 以中文名、英文名、簡介或標籤搜尋，亦可按分類及供應狀態篩選。
-- **Update：** 開啟菜式詳情，按「編輯」後儲存。
-- **Delete：** 開啟詳情，按「刪除菜式」，在確認頁再確定。
-- **Logout：** 使用頁頭的登出按鈕。
+完整操作步驟已放在第 6 節第 3 步。網頁表單使用 `/menu` 並需要 Facebook session，**不是**使用 `/api/menu`。
 
-未登入時，所有 CRUD 網頁會自動跳回登入頁。
+| 瀏覽器操作 | 網頁使用的路由 | 需要登入？ |
+| --- | --- | --- |
+| 總覽及搜尋 | `GET /` | 是 |
+| 新增表單及提交 | `GET /menu/new`、`POST /menu` | 是 |
+| 查看菜式 | `GET /menu/:id` | 是 |
+| 修改菜式 | `GET /menu/:id/edit`、`POST /menu/:id/edit` | 是 |
+| 刪除菜式 | `GET /menu/:id/delete`、`POST /menu/:id/delete` | 是 |
 
 ## 9. REST API
 
-課程要求 REST API 不需要登入，因此 API 不設 session 驗證。
-
-由於 `POST`、`PUT` 和 `DELETE` 同樣公開，此 API 適合課程示範，但不適合在毫無額外保護下公開部署。
+可執行的 `curl` 測試已放在第 6 節第 4 步。REST API 是供 `curl` 等工具使用的 JSON 介面，不是網站表單介面。按課程要求，此 API 不設登入，因此不應在毫無額外保護下公開部署。
 
 | 功能 | Method | Path |
 | --- | --- | --- |
@@ -344,23 +517,8 @@ App Secret 不可出現在程式碼、截圖、README 或提交檔案中。
 | 修改 | PUT | `/api/menu/:id` |
 | 刪除 | DELETE | `/api/menu/:id` |
 
-可用篩選：
+新增必填欄位是 `nameZh`、`nameEn`、`category` 及 `price`。分類只可以是 `dish`、`drink` 或 `bread`。亦可加入查詢參數，例如 `/api/menu?category=drink` 或 `/api/menu?q=奶茶`。
 
-```text
-/api/menu?category=drink
-/api/menu?available=true
-/api/menu?q=奶茶
-```
-
-Windows PowerShell 新增例子：
-
-```powershell
-curl.exe -X POST http://localhost:8099/api/menu `
-  -H "Content-Type: application/json" `
-  -d "{\"nameZh\":\"熱咖啡\",\"nameEn\":\"Hot Coffee\",\"category\":\"drink\",\"price\":22}"
-```
-
-必填欄位是 `nameZh`、`nameEn`、`category` 及 `price`。分類只可以是 `dish`、`drink` 或 `bread`。
 
 ## 10. 確認後匯入 MongoDB
 
