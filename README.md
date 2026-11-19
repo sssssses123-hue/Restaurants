@@ -40,14 +40,13 @@ comp3810sef_group5/
 ├── server.js
 ├── package.json
 ├── README.md
-├── .env.example
+├── .env.local
 ├── .gitignore
 ├── data/menu.json
 ├── views/app.ejs
 └── public/styles.css
 ```
 
-`.env.local` is a private local configuration file and must not be submitted. The project therefore contains nine files including the local secret file, below the requested maximum of ten.
 
 ## 5. Quick start
 
@@ -238,14 +237,13 @@ comp3810sef_group5/
 ├── server.js
 ├── package.json
 ├── README.md
-├── .env.example
+├── .env.local
 ├── .gitignore
 ├── data/menu.json
 ├── views/app.ejs
 └── public/styles.css
 ```
 
-`.env.local` 是本機秘密設定，不列入提交。連同本機秘密檔計算，專案共有 9 個檔案，符合 10 個以內的要求。
 
 ## 5. 快速開始
 
