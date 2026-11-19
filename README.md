@@ -4,7 +4,6 @@
 
 A server-side Hong Kong cha chaan teng menu manager. Authenticated users can search, filter, create, read, update and delete menu items in three categories: **Dishes**, **Drinks** and **Bread**. The same data is exposed through a RESTful JSON API.
 
-The project currently includes 18 preview items, six per category. `DATA_MODE=preview` means **nothing is written to MongoDB**. Database import is performed only after the menu data is approved.
 
 The current submission is a functional baseline for the course scope, not a production-hardened release. Facebook OAuth confirms a user's identity, but the application does not yet check whether that account is an approved manager, so any Facebook account that completes login can access the protected web pages. Manager allowlisting or role-based access control should be added before production use.
 
@@ -202,7 +201,6 @@ The seed command uses `slug` uniqueness and `$setOnInsert`, so it adds missing p
 
 這是一個香港茶餐廳菜單匯總管理系統。已登入的使用者可以搜尋、篩選、新增、查看、修改及刪除菜品、飲品和麵包；同一份資料亦會提供 RESTful JSON API。
 
-目前有 18 項模擬菜單，每個分類各 6 項。`DATA_MODE=preview` 表示**尚未寫入 MongoDB**，只有確認分類及內容後才會正式匯入。
 
 目前提交的是符合課程範圍的可用基礎版本，並非已加固的正式版本。Facebook OAuth 只確認使用者身份，尚未檢查帳戶是否為核准管理員；任何完成 Facebook 登入的帳戶目前都可以進入受保護網頁。正式使用前應加入管理員白名單或角色權限控制（RBAC）。
 
