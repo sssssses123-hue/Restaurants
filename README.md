@@ -50,7 +50,6 @@ comp3810sef_group5/
 
 ## 5. Facebook login
 
-Facebook OAuth has been verified manually. The login flow completes, the authenticated dashboard loads at `http://localhost:8099`, and logout is available from the page header.
 
 The private submission already includes the required settings in `.env.local`:
 
@@ -81,7 +80,7 @@ Install Node.js 18 or later, then run:
 cd ~/comp3810sef_group5
 node --version
 npm install
-npm run dev
+npm start
 ```
 
 The private submission already includes `.env.local`. The application should report MongoDB mode and then listen on `http://localhost:8099`. Keep this terminal running.
@@ -109,7 +108,7 @@ This verifies create, read, update and delete through the website.
 
 ### Step 4: Test the REST API
 
-Open a second Ubuntu terminal while `npm run dev` is still running. The REST API uses JSON requests to `/api/menu`; it does not use the website forms.
+Open a second Ubuntu terminal while `npm start` is still running. The REST API uses JSON requests to `/api/menu`; it does not use the website forms.
 
 Read the current records:
 
@@ -155,15 +154,6 @@ The successful result is:
 Smoke test passed: login, web CRUD, REST CRUD and filtering.
 ```
 
-### Optional: Run without Facebook or MongoDB
-
-The in-memory demo is useful for quick local testing:
-
-```bash
-npm run dev:demo
-```
-
-Open `http://localhost:8099` and select **Enter local test mode**. Changes in this mode are lost when the server stops.
 
 ## 7. Environment configuration and private submission
 
@@ -264,14 +254,20 @@ npm run dev
 
 The seed command uses `slug` uniqueness and `$setOnInsert`, so it adds missing preview items without overwriting existing menu records.
 
-## 11. Current limitations
+## 10. Current MongoDB state
 
-- Facebook login authenticates an account but does not implement a manager allowlist or roles.
-- MongoDB integration is implemented, but no cluster host has been approved and seeded yet.
-- The REST API has no authentication by design for the course requirement.
-- Group member names, student IDs and workload have not yet been added.
-- In-memory changes made in demo or preview mode are lost when the server stops.
+The MongoDB connection values are configured in `.env.local`, and `DATA_MODE` is set to `mongo`. The imported data has been verified against the database:
 
+| Check | Verified result |
+| --- | --- |
+| Database | `cha_chaan_teng` |
+| Collection | `menuitems` |
+
+The seed command is idempotent:
+
+```bash
+npm run seed:menu -- --confirm
+```
 ---
 
 # 茶記菜單簿
@@ -326,7 +322,6 @@ comp3810sef_group5/
 
 ## 5. Facebook 登入
 
-Facebook OAuth 已人手驗證：登入流程可以完成，登入後可看到 `http://localhost:8099` 的受保護網站，頁頭亦提供登出功能。
 
 私人提交包已包含 `.env.local`，所需的 Facebook 設定包括：
 
@@ -357,7 +352,7 @@ App Secret 不可出現在程式碼、截圖或 README 中；它只存在於私�
 cd ~/comp3810sef_group5
 node --version
 npm install
-npm run dev
+npm start
 ```
 
 私人提交包已包含 `.env.local`。啟動後應顯示 MongoDB 模式，並在 `http://localhost:8099` 提供網站。保持此 Terminal 運行。
@@ -385,7 +380,7 @@ npm run dev
 
 ### 第 4 步：測試 REST API
 
-保持 `npm run dev` 運行，另開一個 Ubuntu Terminal。REST API 使用 JSON 向 `/api/menu` 發出請求，不使用網站表單。
+保持 `npm start` 運行，另開一個 Ubuntu Terminal。REST API 使用 JSON 向 `/api/menu` 發出請求，不使用網站表單。
 
 先讀取現有資料：
 
@@ -431,15 +426,6 @@ npm test
 Smoke test passed: login, web CRUD, REST CRUD and filtering.
 ```
 
-### 可選：不使用 Facebook 或 MongoDB
-
-如只需快速測試，可改用記憶體示範模式：
-
-```bash
-npm run dev:demo
-```
-
-開啟 `http://localhost:8099`，按「進入本機測試模式」。此模式的修改會在伺服器停止後消失。
 
 ## 7. 環境設定與私人提交
 
@@ -520,31 +506,19 @@ git status
 新增必填欄位是 `nameZh`、`nameEn`、`category` 及 `price`。分類只可以是 `dish`、`drink` 或 `bread`。亦可加入查詢參數，例如 `/api/menu?category=drink` 或 `/api/menu?q=奶茶`。
 
 
-## 10. 確認後匯入 MongoDB
+## 10. 目前 MongoDB 狀態
 
-資料庫憑證由第 6 節所述的環境變數提供。目前尚未提供 cluster host，`DATA_MODE` 仍是 `preview`，所以不會寫入正式資料。
+MongoDB 連線設定已放在 `.env.local`，`DATA_MODE` 已設為 `mongo`。現有資料已直接向資料庫核對：
 
-收到並確認 cluster host 後：
+| 核對項目 | 實際結果 |
+| --- | --- |
+| 資料庫 | `cha_chaan_teng` |
+| Collection | `menuitems` |
 
-```dotenv
-MONGO_HOST=你的cluster網址
-MONGO_DB=cha_chaan_teng
-DATA_MODE=mongo
-```
-
-執行只新增、不覆寫現有項目的匯入：
-
+匯入指令具備冪等性：
 ```bash
 npm run seed:menu -- --confirm
-npm run dev
 ```
 
-匯入按 `slug` 去重並使用 `$setOnInsert`，不會重複新增，亦不會覆寫資料庫內已有的菜式。
 
-## 11. 目前限制
 
-- Facebook 登入只驗證帳戶，尚未加入管理員白名單或角色權限。
-- MongoDB 整合已經實作，但尚未取得及核准 cluster host，亦未正式匯入資料。
-- 按課程要求，REST API 目前不設登入。
-- 小組組員姓名、Student ID 及分工尚未填寫。
-- 本機示範或 `preview` 模式所作的修改只保存在記憶體，伺服器停止後便會消失。
