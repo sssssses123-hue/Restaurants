@@ -75,43 +75,42 @@ Smoke test passed: login, web CRUD, REST CRUD and filtering.
 
 Before using Facebook or MongoDB mode, follow section 6 to create the local environment file. The demo command does not need Facebook or MongoDB credentials.
 
-## 6. Environment and secret handling
+## 6. Environment configuration and private submission
 
-`server.js` loads environment variables from `.env.local` through `dotenv`; the application reads the values from `process.env`. Real Facebook and MongoDB credentials must not be hard-coded in `server.js`, EJS templates, client-side files or the README.
+`server.js` loads environment variables from `.env.local` through `dotenv`; the application reads the values from `process.env`. For this course submission, `.env.local` is intentionally included so the project can be run without manually creating another configuration file. `.env.example` is not used in this workflow.
 
-The files have separate responsibilities:
+> **Security warning:** `.env.local` contains the Facebook App Secret, MongoDB credentials and session secret. Submit it only through a private repository or private course package. Never commit it to a public repository, post screenshots containing it, or share it outside the project group. If it is exposed, rotate the Facebook and MongoDB credentials immediately.
 
-| File or location | Purpose | Commit to Git? |
+| Item | Purpose | Included in private submission? |
 | --- | --- | --- |
-| `server.js` | Reads variables from `process.env` and uses them | Yes |
-| `.env.local` | Real values used on this computer | No |
-| `.env.example` | Variable names and safe placeholders for teammates | Yes |
-| Deployment environment settings | Real values used by the deployed service | No |
-
-This separation keeps credentials out of source history, allows different credentials for development and production, and makes rotation possible without changing application code. It also prevents a real secret from being exposed when the repository or a screenshot is shared.
-
-To create the local file, copy `.env.example` to `.env.local`, then replace every placeholder there. Never copy real values back into `.env.example`. The relevant variable names are:
+| `server.js` | Reads variables from `process.env` | Yes |
+| `.env.local` | Runtime configuration and real credentials | Yes, private only |
+| `.env.example` | Legacy template, no longer used for setup | No |
+| Deployment environment settings | Separate configuration for a deployed service | Configure on the hosting platform |
 
 ```dotenv
-FACEBOOK_APP_ID=<facebook-app-id>
-FACEBOOK_APP_SECRET=<facebook-app-secret>
-MONGODB_URI=<complete-mongodb-connection-uri>
-SESSION_SECRET=<long-random-text-never-share-it>
+DATA_MODE=mongo
+AUTH_MODE=facebook
+FACEBOOK_APP_ID=<value>
+FACEBOOK_APP_SECRET=<value>
+FACEBOOK_CALLBACK_URL=http://localhost:8099/auth/facebook/callback
+SESSION_SECRET=<value>
+MONGO_HOST=<value>
+MONGO_USER=<value>
+MONGO_PASSWORD=<value>
+MONGO_DB=cha_chaan_teng
+MONGO_OPTIONS=retryWrites=true&w=majority
 ```
 
-The MongoDB connection can alternatively be supplied with `MONGO_HOST`, `MONGO_USER`, `MONGO_PASSWORD`, `MONGO_DB` and `MONGO_OPTIONS`. Environment variables only prevent values from being placed in source files; they are **not encryption**. A secret is still accessible to the server process and may be exposed through logs, error messages or rendered HTML. Never print secret values, and never send the Facebook App Secret or MongoDB credentials to the browser.
+The values above are placeholders for documentation only. Do not copy the README placeholders over the working `.env.local`. The application also accepts a complete connection string through `MONGODB_URI` instead of the separate `MONGO_*` fields. Environment variables are **not encryption**; anyone with access to the file or repository history may read the credentials.
 
-For a real deployment, configure these values in the hosting platform's secret or environment-variable settings rather than uploading `.env.local`. Use separate credentials for development and production, grant the database user only the permissions it needs, and rotate a credential immediately if it is exposed. Removing a committed secret from the latest file is not enough; rotate it and assess whether Git history must also be cleaned.
-
-`.gitignore` excludes `.env` and `.env.*` while allowing the safe `.env.example` template:
+`.gitignore` excludes other environment files but explicitly allows `.env.local` so that a normal `git add .` includes it:
 
 ```gitignore
 .env
 .env.*
-!.env.example
-```
-
-`SESSION_SECRET` is mandatory when `NODE_ENV=production`; generate a long random value rather than using the development fallback.
+!.env.local
+```.
 
 ## 7. Facebook login
 
@@ -274,43 +273,42 @@ Smoke test passed: login, web CRUD, REST CRUD and filtering.
 
 使用 Facebook 或 MongoDB 模式前，請按第 6 節建立本機環境檔案。本機示範指令不需要 Facebook 或 MongoDB 憑證。
 
-## 6. 環境變數與秘密處理
+## 6. 環境設定與私人提交
 
-`server.js` 會透過 `dotenv` 讀取 `.env.local`，再從 `process.env` 取得設定。真正的 Facebook 及 MongoDB 憑證不可直接寫死在 `server.js`、EJS 模板、前端檔案或 README 中。
+`server.js` 會透過 `dotenv` 讀取 `.env.local`，再從 `process.env` 取得設定。本課程提交包會刻意包含 `.env.local`，讓專案毋須另外建立設定檔便可執行。`.env.example` 不再用於此流程。
 
-各檔案及設定的分工如下：
+> **安全警告：** `.env.local` 內有 Facebook App Secret、MongoDB 憑證及 session secret。只可透過私人 repo 或私人課程提交包提交；切勿上傳至公開 GitHub、貼出包含內容的截圖，或分享給組外人士。如曾泄漏，應立即輪替 Facebook 及 MongoDB 憑證。
 
-| 檔案或位置 | 用途 | 提交至 Git？ |
+| 項目 | 用途 | 私人提交包是否包含？ |
 | --- | --- | --- |
-| `server.js` | 從 `process.env` 讀取及使用變數 | 是 |
-| `.env.local` | 這部電腦實際使用的真正值 | 否 |
-| `.env.example` | 供組員參考的變數名稱及安全佔位值 | 是 |
-| 部署平台的環境設定 | 正式服務實際使用的真正值 | 否 |
-
-這種分離可避免憑證進入原始碼歷史、允許開發和正式環境使用不同憑證、輪替憑證時毋須修改程式碼，亦減少分享 repo 或截圖時泄漏秘密的風險。
-
-建立本機設定時，把 `.env.example` 複製為 `.env.local`，然後只在 `.env.local` 填入真正值。切勿把真正值抄回 `.env.example`。主要變數名稱如下：
+| `server.js` | 從 `process.env` 讀取設定 | 是 |
+| `.env.local` | 執行設定及真正憑證 | 是，只限私人 |
+| `.env.example` | 舊有範本，已不再用於設定 | 否 |
+| 部署平台環境設定 | 已部署服務的獨立設定 | 在平台上另行設定 |
 
 ```dotenv
-FACEBOOK_APP_ID=<facebook-app-id>
-FACEBOOK_APP_SECRET=<facebook-app-secret>
-MONGODB_URI=<complete-mongodb-connection-uri>
-SESSION_SECRET=<long-random-text-never-share-it>
+DATA_MODE=mongo
+AUTH_MODE=facebook
+FACEBOOK_APP_ID=<value>
+FACEBOOK_APP_SECRET=<value>
+FACEBOOK_CALLBACK_URL=http://localhost:8099/auth/facebook/callback
+SESSION_SECRET=<value>
+MONGO_HOST=<value>
+MONGO_USER=<value>
+MONGO_PASSWORD=<value>
+MONGO_DB=cha_chaan_teng
+MONGO_OPTIONS=retryWrites=true&w=majority
 ```
 
-MongoDB 亦可用 `MONGO_HOST`、`MONGO_USER`、`MONGO_PASSWORD`、`MONGO_DB` 及 `MONGO_OPTIONS` 分開設定。環境變數只是避免把值寫進原始碼，**並非加密**。秘密仍可被伺服器程序讀取，亦可能經日誌、錯誤訊息或渲染後的 HTML 泄漏。不可輸出秘密值，亦不可把 Facebook App Secret 或 MongoDB 憑證傳送到瀏覽器。
+以上只是文件用佔位值，不可用它們覆蓋現有的 `.env.local`。MongoDB 亦接受完整 `MONGODB_URI`，代替分開的 `MONGO_*` 欄位。環境變數**並非加密**；任何能讀取檔案或 Git 歷史的人都可以看到憑證。
 
-正式部署時，應在代管平台的 Secret／Environment Variables 設定中填入這些值，而不是上傳 `.env.local`。開發及正式環境應使用不同憑證；資料庫使用者只應獲得必要權限。若憑證曾泄漏，應立即輪替，而不只是從最新檔案移除；並評估是否需要清理 Git 歷史。
-
-`.gitignore` 會排除 `.env` 和 `.env.*`，但保留安全的 `.env.example` 模板：
+`.gitignore` 會排除其他環境檔案，但明確允許 `.env.local`，所以正常執行 `git add .` 也會將它加入：
 
 ```gitignore
 .env
 .env.*
-!.env.example
+!.env.local
 ```
-
-當 `NODE_ENV=production` 時必須提供 `SESSION_SECRET`；請產生長隨機值，不應使用開發用後備值。
 
 ## 7. Facebook 登入
 
