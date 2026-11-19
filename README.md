@@ -5,9 +5,9 @@
 A server-side Hong Kong cha chaan teng menu manager. Authenticated users can search, filter, create, read, update and delete menu items in three categories: **Dishes**, **Drinks** and **Bread**. The same data is exposed through a RESTful JSON API.
 
 
-The current submission is a functional baseline for the course scope, not a production-hardened release. Facebook OAuth confirms a user's identity, but the application does not yet check whether that account is an approved manager, so any Facebook account that completes login can access the protected web pages. Manager allowlisting or role-based access control should be added before production use.
+Facebook OAuth confirms a user's identity, but the application does not yet check whether that account is an approved manager, so any Facebook account that completes login can access the protected web pages. Manager allowlisting or role-based access control should be added before production use.
 
-The REST API is intentionally public for the course requirement and includes write and delete operations. It should not be exposed as a public production service without additional access control.
+The REST API is intentionally public  and includes write and delete operations. It should not be exposed as a public production service without additional access control.
 
 ## 2. Group information
 
@@ -202,9 +202,9 @@ The seed command uses `slug` uniqueness and `$setOnInsert`, so it adds missing p
 這是一個香港茶餐廳菜單匯總管理系統。已登入的使用者可以搜尋、篩選、新增、查看、修改及刪除菜品、飲品和麵包；同一份資料亦會提供 RESTful JSON API。
 
 
-目前提交的是符合課程範圍的可用基礎版本，並非已加固的正式版本。Facebook OAuth 只確認使用者身份，尚未檢查帳戶是否為核准管理員；任何完成 Facebook 登入的帳戶目前都可以進入受保護網頁。正式使用前應加入管理員白名單或角色權限控制（RBAC）。
+Facebook OAuth 只確認使用者身份，尚未檢查帳戶是否為核准管理員；任何完成 Facebook 登入的帳戶目前都可以進入受保護網頁。正式使用前應加入管理員白名單或角色權限控制（RBAC）。
 
-REST API 按課程要求刻意不設登入，但包含新增、修改及刪除操作。若未加入其他存取控制，不應直接作為公開的正式服務。
+REST API 刻意不設登入，但包含新增、修改及刪除操作。若未加入其他存取控制，不應直接作為公開的正式服務。
 
 ## 2. 小組資料
 
