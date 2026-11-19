@@ -50,14 +50,16 @@ comp3810sef_group5/
 
 ## 5. Quick start
 
-Install Node.js 18 or later, then open PowerShell or Terminal in `comp3810sef_group5`:
+The instructions in this article assume the use of the Ubuntu Terminal. Install Node.js 18 or higher, open the terminal, and navigate to the project folder:
 
 ```bash
+cd ~/comp3810sef_group5
+node --version
 npm install
-npm run dev:demo
+npm start
 ```
 
-Open `http://localhost:8099` and select **Enter local test mode**. This temporary mode uses in-memory preview data and does not replace the Facebook-authenticated final mode.
+Open `http://localhost:8099` in your browser and log in using Facebook authentication to access the Restaurant Management System.
 
 Run the complete login, web CRUD and REST API test:
 
@@ -247,14 +249,16 @@ comp3810sef_group5/
 
 ## 5. 快速開始
 
-安裝 Node.js 18 或以上，然後在 `comp3810sef_group5` 開啟 PowerShell 或 Terminal：
+本文操作以 Ubuntu Terminal 為準。安裝 Node.js 18 或以上，開啟終端機並進入專案資料夾：
 
 ```bash
+cd ~/comp3810sef_group5
+node --version
 npm install
-npm run dev:demo
+npm start
 ```
 
-瀏覽器打開 `http://localhost:8099`，按「進入本機測試模式」。此模式使用記憶體資料，不會取代正式 Facebook 模式。
+瀏覽器打開 `http://localhost:8099`，選擇Facebook驗證方式登入,即可看到餐廳管理系統
 
 執行完整登入、網頁 CRUD 及 REST API 測試：
 
