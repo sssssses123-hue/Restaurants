@@ -16,8 +16,8 @@ The REST API is intentionally public for the course requirement and includes wri
 | --- | --- | --- |
 | HAN Kongdongxu | 13786160 |              |
 |   Chen Junyu   | 13779825 |              |
-| Chan Tsz Ching | 13887258 | To be provided |
-| Keung Hoi Ching | 13882355 | To be provided |
+| Chan Tsz Ching | 13887258 |              |
+| Keung Hoi Ching | 13882355 |             |
 | So Chi Hin     |   13176891     |                |
 | Cheung Chak Wai |  13884490     |                |
 Group: 5
@@ -212,12 +212,12 @@ REST API 按課程要求刻意不設登入，但包含新增、修改及刪除�
 
 | 組員 | Student ID | 分工 |
 | --- | --- | --- |
-| HAN Kongdongxu | 13786160 | 待提供 |
-| 待提供 | 待提供 | 待提供 |
-| 待提供 | 待提供 | 待提供 |
-| 待提供 | 待提供 | 待提供 |
-|       |       |        |
-|       |       |        |
+| HAN Kongdongxu | 13786160 |       |
+| Chen Junyu | 13779825 |        |
+| Chan Tsz Ching | 13887258 |          |
+| Keung Hoi Ching | 13882355 |         |
+| So Chi Hin    |  13176891   |        |
+| Cheung Chak Wai |  13884490     |        |
 
 Group number: 5
 
