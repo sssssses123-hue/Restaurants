@@ -18,8 +18,8 @@ The REST API is intentionally public for the course requirement and includes wri
 |   Chen Junyu   | 13779825 |              |
 | Chan Tsz Ching | 13887258 | To be provided |
 | Keung Hoi Ching | 13882355 | To be provided |
-|                |                |                |
-|                |                |                |
+| So Chi Hin     |   13176891     |                |
+| Cheung Chak Wai |  13884490     |                |
 Group: 5
 
 ## 3. Required technologies and functions
