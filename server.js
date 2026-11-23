@@ -23,22 +23,22 @@ const CATEGORIES = [
     key: 'dish',
     labelZh: '菜品',
     labelEn: 'Dishes',
-    description: '飯麵、小食及茶餐廳熱食',
-    icon: '碟'
+    description: 'Rice, noodles, snacks and hot dishes',
+    icon: 'D'
   },
   {
     key: 'drink',
     labelZh: '飲品',
     labelEn: 'Drinks',
-    description: '奶茶、咖啡、凍飲及特飲',
-    icon: '杯'
+    description: 'Milk tea, coffee, cold drinks and specials',
+    icon: 'T'
   },
   {
     key: 'bread',
     labelZh: '麵包',
     labelEn: 'Bread',
-    description: '菠蘿包、多士及出爐烘焙',
-    icon: '包'
+    description: 'Pineapple buns, toast and fresh bakery',
+    icon: 'B'
   }
 ];
 
@@ -179,16 +179,16 @@ function normalizeMenuInput(input, existing = {}) {
   );
 
   if (!CATEGORY_MAP[category]) {
-    throw new ValidationError('請選擇有效分類：菜品、飲品或麵包。');
+    throw new ValidationError('Choose a valid category: Dishes, Drinks or Bread.');
   }
   if (!nameZh) {
-    throw new ValidationError('請輸入中文名稱。');
+    throw new ValidationError('Enter a Chinese dish name.');
   }
   if (!nameEn) {
-    throw new ValidationError('請輸入英文名稱。');
+    throw new ValidationError('Enter an English dish name.');
   }
   if (!Number.isFinite(price) || price < 0) {
-    throw new ValidationError('價格必須是 0 或以上的有效數字。');
+    throw new ValidationError('Enter a valid price of zero or more.');
   }
 
   return {
@@ -370,9 +370,9 @@ class MongoRepository {
 
 function friendlyError(error) {
   if (error?.code === 11000) {
-    return '此菜式代碼已存在。';
+    return 'A menu item with this code already exists.';
   }
-  return error?.message || '系統暫時無法完成操作，請再試一次。';
+  return error?.message || 'The action could not be completed. Please try again.';
 }
 
 function asyncRoute(handler) {
@@ -498,7 +498,7 @@ function createWebRouter(repository, config, facebookConfigured) {
     loggedIn(req)
       ? res.redirect('/')
       : render(res, 'login', {
-          pageTitle: '登入',
+          pageTitle: 'Sign In',
           authError: req.query.error || '',
           demoAuth: config.authMode === 'demo',
           facebookConfigured
@@ -510,7 +510,7 @@ function createWebRouter(repository, config, facebookConfigured) {
       const target = text(req.query.returnTo, '/');
       const returnTo = target.startsWith('/') && !target.startsWith('//') ? target : '/';
       req.login(
-        { id: 'local-demo-user', name: '本機示範管理員', provider: 'local-demo' },
+        { id: 'local-demo-user', name: 'Local Demo Admin', provider: 'local-demo' },
         (error) => (error ? next(error) : res.redirect(returnTo))
       );
     });
@@ -546,7 +546,7 @@ function createWebRouter(repository, config, facebookConfigured) {
       const items = await repository.list(filter);
       const allItems = await repository.list();
       render(res, 'dashboard', {
-        pageTitle: '菜單總覽',
+        pageTitle: 'Menu Overview',
         items,
         filter,
         notice: req.query.notice || '',
@@ -567,9 +567,9 @@ function createWebRouter(repository, config, facebookConfigured) {
 
   router.get('/menu/new', requireAuth, (req, res) =>
     render(res, 'form', {
-      pageTitle: '新增菜式',
+      pageTitle: 'Add Menu Item',
       pageEyebrow: 'CREATE',
-      submitLabel: '儲存菜式',
+      submitLabel: 'Save Menu Item',
       formAction: '/menu',
       formError: '',
       item: {
@@ -599,9 +599,9 @@ function createWebRouter(repository, config, facebookConfigured) {
           res,
           'form',
           {
-            pageTitle: '新增菜式',
+            pageTitle: 'Add Menu Item',
             pageEyebrow: 'CREATE',
-            submitLabel: '儲存菜式',
+            submitLabel: 'Save Menu Item',
             formAction: '/menu',
             formError: friendlyError(error),
             item: {
@@ -625,9 +625,9 @@ function createWebRouter(repository, config, facebookConfigured) {
       const item = await repository.findById(req.params.id);
       if (!item) {
         return render(res, 'error', {
-          pageTitle: '找不到菜式',
+          pageTitle: 'Menu Item Not Found',
           statusCode: 404,
-          message: '此菜式不存在，可能已被刪除。'
+          message: 'This menu item does not exist or may have been deleted.'
         }, 404);
       }
       return render(res, 'details', {
@@ -646,15 +646,15 @@ function createWebRouter(repository, config, facebookConfigured) {
       const item = await repository.findById(req.params.id);
       if (!item) {
         return render(res, 'error', {
-          pageTitle: '找不到菜式',
+          pageTitle: 'Menu Item Not Found',
           statusCode: 404,
-          message: '此菜式不存在，可能已被刪除。'
+          message: 'This menu item does not exist or may have been deleted.'
         }, 404);
       }
       return render(res, 'form', {
-        pageTitle: `編輯 ${item.nameZh}`,
+        pageTitle: `Edit ${item.nameZh} · ${item.nameEn}`,
         pageEyebrow: 'UPDATE',
-        submitLabel: '儲存修改',
+        submitLabel: 'Save Changes',
         formAction: `/menu/${item.id}/edit`,
         formError: '',
         item
@@ -671,16 +671,16 @@ function createWebRouter(repository, config, facebookConfigured) {
         return item
           ? res.redirect(`/menu/${item.id}?notice=updated`)
           : render(res, 'error', {
-              pageTitle: '找不到菜式',
+              pageTitle: 'Menu Item Not Found',
               statusCode: 404,
-              message: '此菜式不存在，可能已被刪除。'
+              message: 'This menu item does not exist or may have been deleted.'
             }, 404);
       } catch (error) {
         const item = await repository.findById(req.params.id);
         return render(res, 'form', {
-          pageTitle: `編輯 ${item?.nameZh || '菜式'}`,
+          pageTitle: item ? `Edit ${item.nameZh} · ${item.nameEn}` : 'Edit Menu Item',
           pageEyebrow: 'UPDATE',
-          submitLabel: '儲存修改',
+          submitLabel: 'Save Changes',
           formAction: `/menu/${req.params.id}/edit`,
           formError: friendlyError(error),
           item: {
@@ -703,13 +703,13 @@ function createWebRouter(repository, config, facebookConfigured) {
       const item = await repository.findById(req.params.id);
       if (!item) {
         return render(res, 'error', {
-          pageTitle: '找不到菜式',
+          pageTitle: 'Menu Item Not Found',
           statusCode: 404,
-          message: '此菜式不存在，可能已被刪除。'
+          message: 'This menu item does not exist or may have been deleted.'
         }, 404);
       }
       return render(res, 'delete-confirm', {
-        pageTitle: `刪除 ${item.nameZh}`,
+        pageTitle: `Delete ${item.nameZh} · ${item.nameEn}`,
         item
       });
     })
@@ -797,9 +797,9 @@ async function buildApp(options = {}) {
   app.use((req, res) =>
     res.status(404).render('app', {
       view: 'error',
-      pageTitle: '找不到頁面',
+      pageTitle: 'Page Not Found',
       statusCode: 404,
-      message: `找不到 ${req.path}，請返回菜單總覽。`
+      message: `The page ${req.path} could not be found. Return to the menu overview.`
     })
   );
   app.use((error, req, res, _next) => {
@@ -808,9 +808,9 @@ async function buildApp(options = {}) {
       ? res.status(error.status || 500).json({ error: error.message })
       : res.status(error.status || 500).render('app', {
           view: 'error',
-          pageTitle: '系統錯誤',
+          pageTitle: 'System Error',
           statusCode: error.status || 500,
-          message: config.nodeEnv === 'production' ? '請稍後再試。' : error.message
+          message: config.nodeEnv === 'production' ? 'Please try again later.' : error.message
         });
   });
   return app;
@@ -933,7 +933,7 @@ async function runSmokeTest() {
       throw new Error('Web update smoke test failed.');
     }
     const deletePage = await request(`/menu/${id}/delete`, {}, cookie);
-    if (deletePage.status !== 200 || !deletePage.text.includes('確定刪除')) {
+    if (deletePage.status !== 200 || !deletePage.text.includes('Delete')) {
       throw new Error('Web delete confirmation smoke test failed.');
     }
     const deleteWeb = await request(`/menu/${id}/delete`, { method: 'POST' }, cookie);
@@ -999,3 +999,4 @@ if (require.main === module) {
 }
 
 module.exports = { buildApp };
+
