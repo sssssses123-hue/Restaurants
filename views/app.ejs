@@ -1,61 +1,61 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="香港茶餐廳菜單匯總管理系統，集中管理菜品、飲品及麵包。"
+      content="Hong Kong cha chaan teng menu management for dishes, drinks and bread."
     >
-    <title><%= pageTitle ? `${pageTitle} · 茶記菜單簿` : '茶記菜單簿' %></title>
+    <title><%= pageTitle ? `${pageTitle} · Cha Chaan Teng Menu Desk` : 'Cha Chaan Teng Menu Desk' %></title>
     <link rel="stylesheet" href="/public/styles.css">
   </head>
   <body>
-    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <% if (view === 'login') { %>
       <main id="main-content" class="login-page">
         <div class="login-visual">
           <div class="login-visual-content">
             <p class="eyebrow light">HONG KONG CHA CHAAN TENG</p>
-            <div class="login-stamp" aria-hidden="true"><span>五</span><small>GROUP</small></div>
-            <h1>一間茶記，<br>一張清楚嘅菜單。</h1>
-            <p>集中整理招牌菜、奶茶凍飲同出爐麵包，讓每次更新價格與供應狀態都簡單可靠。</p>
+            <div class="login-stamp" aria-hidden="true"><span>5</span><small>GROUP</small></div>
+            <h1>One café.<br>One clear menu.</h1>
+            <p>A single place for signature dishes, milk tea, cold drinks and fresh bakery items—with reliable price and availability updates.</p>
             <div class="login-category-list">
-              <% categories.forEach((category) => { %><span><b><%= category.icon %></b><%= category.labelZh %></span><% }); %>
+              <% categories.forEach((category) => { %><span><b><%= category.icon %></b><%= category.labelEn %></span><% }); %>
             </div>
           </div>
-          <div class="login-visual-note">EST. 2026 · 港式日常 · 一頁睇清</div>
+          <div class="login-visual-note">EST. 2026 · HONG KONG · MENU CONTROL</div>
         </div>
         <section class="login-panel">
           <div class="login-card">
             <div class="login-brand">
-              <span class="brand-mark" aria-hidden="true">茶</span>
-              <span><strong>茶記菜單簿</strong><small>管理員登入</small></span>
+              <span class="brand-mark" aria-hidden="true">C</span>
+              <span><strong>Cha Chaan Teng Menu Desk</strong><small>MANAGER ACCESS</small></span>
             </div>
             <p class="eyebrow">WELCOME BACK</p>
-            <h2>返嚟打理今日菜單</h2>
-            <p class="login-help">使用已授權的 Facebook 帳戶登入。登入後才可新增、修改及刪除菜式。</p>
+            <h2>Manage today’s menu</h2>
+            <p class="login-help">Sign in with an authorised Facebook account to create, update or delete menu items.</p>
             <% if (authError) { %>
               <div class="alert alert-error" role="alert">
                 <%= authError === 'facebook-not-configured'
-                  ? 'Facebook 登入尚未設定，請按 README 填入 App ID 和 App Secret。'
-                  : 'Facebook 登入未完成，請再試一次。' %>
+                  ? 'Facebook login is not configured. Add the App ID and App Secret in .env.local.'
+                  : 'Facebook login was not completed. Please try again.' %>
               </div>
             <% } %>
             <% if (facebookConfigured) { %>
-              <a class="facebook-button" href="/auth/facebook"><span class="facebook-icon">f</span>使用 Facebook 繼續</a>
+              <a class="facebook-button" href="/auth/facebook"><span class="facebook-icon">f</span>Continue with Facebook</a>
             <% } else { %>
-              <div class="button-disabled"><span class="facebook-icon">f</span>Facebook 尚未設定</div>
-              <p class="config-hint">請在 <code>.env.local</code> 填入 App ID 及 App Secret。</p>
+              <div class="button-disabled"><span class="facebook-icon">f</span>Facebook not configured</div>
+              <p class="config-hint">Add the App ID and App Secret to <code>.env.local</code>.</p>
             <% } %>
             <% if (demoAuth) { %>
-              <div class="demo-divider"><span>或</span></div>
-              <a class="secondary-button" href="/auth/demo">進入本機測試模式</a>
-              <p class="config-hint">測試模式只供本機驗收，正式展示請使用 Facebook 登入。</p>
+              <div class="demo-divider"><span>or</span></div>
+              <a class="secondary-button" href="/auth/demo">Enter local test mode</a>
+              <p class="config-hint">For local testing only. Use Facebook for the final presentation.</p>
             <% } %>
             <div class="login-security">
-              <span>鎖</span><p>密鑰及資料庫密碼不會傳到瀏覽器。</p>
+              <span>SAFE</span><p>Secrets and database credentials are never sent to the browser.</p>
             </div>
           </div>
         </section>
@@ -64,18 +64,18 @@
       <header class="site-header">
         <div class="shell header-inner">
           <a class="brand" href="/">
-            <span class="brand-mark">茶</span>
-            <span class="brand-copy"><strong>茶記菜單簿</strong><small>CHA CHAAN TENG MENU DESK</small></span>
+            <span class="brand-mark">C</span>
+            <span class="brand-copy"><strong>Cha Chaan Teng Menu Desk</strong><small>GROUP 5 · MENU MANAGEMENT</small></span>
           </a>
           <% if (currentUser) { %>
-            <nav class="main-nav" aria-label="主要導覽">
-              <a class="<%= currentPath === '/' ? 'is-active' : '' %>" href="/">菜單總覽</a>
-              <a class="<%= currentPath === '/menu/new' ? 'is-active' : '' %>" href="/menu/new">新增菜式</a>
+            <nav class="main-nav" aria-label="Main navigation">
+              <a class="<%= currentPath === '/' ? 'is-active' : '' %>" href="/">Menu Items</a>
+              <a class="<%= currentPath === '/menu/new' ? 'is-active' : '' %>" href="/menu/new">Add Item</a>
             </nav>
             <div class="header-account">
-              <span class="mode-badge <%= dataMode === 'mongo' ? 'mode-live' : 'mode-preview' %>"><%= dataMode === 'mongo' ? 'MongoDB' : '預覽模式' %></span>
+              <span class="mode-badge <%= dataMode === 'mongo' ? 'mode-live' : 'mode-preview' %>"><%= dataMode === 'mongo' ? 'MongoDB' : 'Preview Mode' %></span>
               <span class="user-chip"><span class="avatar"><%= currentUser.name.slice(0, 1).toUpperCase() %></span><span><%= currentUser.name %></span></span>
-              <form action="/logout" method="post"><button class="text-button" type="submit">登出</button></form>
+              <form action="/logout" method="post"><button class="text-button" type="submit">Log out</button></form>
             </div>
           <% } %>
         </div>
@@ -87,124 +87,124 @@
             <div class="shell dashboard-hero-grid">
               <div>
                 <p class="eyebrow light">MENU CONTROL DESK · GROUP 5</p>
-                <h1>今日茶記，<br><span>一頁睇清。</span></h1>
-                <p class="hero-copy">集中管理菜品、飲品及麵包。搜尋菜式、更新價錢、切換供應狀態，再由同一份資料提供 RESTful API。</p>
+                <h1>Today's menu,<br><span>clear at a glance.</span></h1>
+                <p class="hero-copy">Manage dishes, drinks and bread in one place. Search the menu, update prices and availability, then serve the same data through the RESTful API.</p>
                 <div class="hero-actions">
-                  <a class="primary-button light-button" href="/menu/new">新增菜式</a>
-                  <a class="hero-api-link" href="/api/menu">查看 JSON API ↗</a>
+                  <a class="primary-button light-button" href="/menu/new">Add Menu Item</a>
+                  <a class="hero-api-link" href="/api/menu">View JSON API ↗</a>
                 </div>
               </div>
-              <div class="hero-board">
-                <div class="board-title"><span>今日總數</span><span class="live-dot"><%= dataMode === 'mongo' ? '已連接 MongoDB' : '模擬資料' %></span></div>
+              <div class="hero-board" aria-label="Menu summary">
+                <div class="board-title"><span>MENU TOTAL</span><span class="live-dot"><%= dataMode === 'mongo' ? 'Connected to MongoDB' : 'Preview data' %></span></div>
                 <strong class="hero-total"><%= String(stats.total).padStart(2, '0') %></strong>
                 <div class="board-rule"></div>
-                <div class="board-grid"><div><span>供應中</span><b><%= stats.available %></b></div><div><span>精選推介</span><b><%= stats.featured %></b></div></div>
+                <div class="board-grid"><div><span>Available</span><b><%= stats.available %></b></div><div><span>Featured</span><b><%= stats.featured %></b></div></div>
                 <p class="board-footnote">MENU ITEMS · LIVE SUMMARY</p>
               </div>
             </div>
           </section>
           <div class="shell">
             <% if (notice) { %>
-              <div class="notice-bar" role="status"><span class="notice-mark">✓</span><%= notice === 'deleted' ? '菜式已刪除。' : notice === 'not-found' ? '找不到菜式。' : '操作已完成。' %></div>
+              <div class="notice-bar" role="status"><span class="notice-mark">✓</span><%= notice === 'deleted' ? 'Menu item deleted.' : notice === 'not-found' ? 'Menu item not found.' : 'The action was completed.' %></div>
             <% } %>
             <section class="category-section">
-              <div class="section-heading compact-heading"><div><p class="eyebrow">CATEGORIES</p><h2>三大分類</h2></div><p>點選分類即可篩選菜單</p></div>
+              <div class="section-heading compact-heading"><div><p class="eyebrow">CATEGORIES</p><h2>Menu Categories</h2></div><p>Select a category to filter the menu</p></div>
               <div class="category-grid">
                 <% categories.forEach((category) => { %>
                   <a class="category-tile category-tile-<%= category.key %>" href="/?category=<%= category.key %>">
                     <span class="category-icon"><%= category.icon %></span>
-                    <span class="category-copy"><span><%= category.labelEn %></span><strong><%= category.labelZh %></strong><small><%= category.description %></small></span>
+                    <span class="category-copy"><span>CATEGORY</span><strong><%= category.labelEn %></strong><small><%= category.description %></small></span>
                     <span class="category-count"><%= stats.byCategory[category.key] || 0 %></span>
                   </a>
                 <% }); %>
               </div>
             </section>
             <section class="menu-section">
-              <div class="section-heading"><div><p class="eyebrow">MENU ITEMS</p><h2><%= filter.category ? getCategory(filter.category).labelZh : '全部菜式' %></h2></div><p>共 <strong><%= items.length %></strong> 項結果</p></div>
+              <div class="section-heading"><div><p class="eyebrow">MENU ITEMS</p><h2><%= filter.category ? getCategory(filter.category).labelEn : 'All Menu Items' %></h2></div><p><strong><%= items.length %></strong> result<%= items.length === 1 ? '' : 's' %></p></div>
               <form class="filter-panel" method="get" action="/">
-                <label class="search-field"><span>搜尋</span><span class="input-with-icon"><span>⌕</span><input type="search" name="q" value="<%= filter.q %>" placeholder="菜名、英文名或標籤，例如：奶茶"></span></label>
-                <label><span>分類</span><select name="category"><option value="">全部分類</option><% categories.forEach((category) => { %><option value="<%= category.key %>" <%= filter.category === category.key ? 'selected' : '' %>><%= category.labelZh %></option><% }); %></select></label>
-                <label><span>供應狀態</span><select name="available"><option value="">全部狀態</option><option value="true" <%= filter.available === true ? 'selected' : '' %>>供應中</option><option value="false" <%= filter.available === false ? 'selected' : '' %>>暫停供應</option></select></label>
-                <div class="filter-actions"><button class="primary-button" type="submit">套用篩選</button><a class="quiet-button" href="/">清除</a></div>
+                <label class="search-field"><span>SEARCH</span><span class="input-with-icon"><span>⌕</span><input type="search" name="q" value="<%= filter.q %>" placeholder="Dish name, English name or tag"></span></label>
+                <label><span>CATEGORY</span><select name="category"><option value="">All categories</option><% categories.forEach((category) => { %><option value="<%= category.key %>" <%= filter.category === category.key ? 'selected' : '' %>><%= category.labelEn %></option><% }); %></select></label>
+                <label><span>AVAILABILITY</span><select name="available"><option value="">All statuses</option><option value="true" <%= filter.available === true ? 'selected' : '' %>>Available</option><option value="false" <%= filter.available === false ? 'selected' : '' %>>Unavailable</option></select></label>
+                <div class="filter-actions"><button class="primary-button" type="submit">Apply Filters</button><a class="quiet-button" href="/">Clear</a></div>
               </form>
               <% if (items.length) { %>
                 <div class="menu-grid">
                   <% items.forEach((item) => { %>
                     <article class="menu-card <%= !item.available ? 'is-unavailable' : '' %>">
                       <div class="card-accent category-<%= item.category %>"></div>
-                      <div class="card-topline"><span class="category-label category-label-<%= item.category %>"><span><%= getCategory(item.category).icon %></span><%= getCategory(item.category).labelZh %></span><% if (item.featured) { %><span class="featured-label">推介</span><% } %></div>
-                      <a class="card-body" href="/menu/<%= item.id %>"><h2><%= item.nameZh %></h2><p class="english-name"><%= item.nameEn %></p><p class="card-description"><%= item.descriptionZh || '尚未填寫介紹。' %></p></a>
-                      <div class="card-tags"><span class="status-pill <%= item.available ? 'is-on' : 'is-off' %>"><%= item.available ? '供應中' : '暫停供應' %></span><% item.tags.slice(0, 2).forEach((tag) => { %><span class="tag"><%= tag %></span><% }); %></div>
-                      <div class="card-footer"><strong><%= formatPrice(item.price) %></strong><div class="card-actions"><a href="/menu/<%= item.id %>">查看</a><a href="/menu/<%= item.id %>/edit">編輯</a></div></div>
+                      <div class="card-topline"><span class="category-label category-label-<%= item.category %>"><span><%= getCategory(item.category).icon %></span><%= getCategory(item.category).labelEn %></span><% if (item.featured) { %><span class="featured-label">Featured</span><% } %></div>
+                      <a class="card-body" href="/menu/<%= item.id %>"><h2><%= item.nameZh %></h2><p class="english-name"><%= item.nameEn %></p><p class="card-description"><%= item.descriptionZh || 'No description yet.' %></p></a>
+                      <div class="card-tags"><span class="status-pill <%= item.available ? 'is-on' : 'is-off' %>"><%= item.available ? 'Available' : 'Unavailable' %></span><% item.tags.slice(0, 2).forEach((tag) => { %><span class="tag"><%= tag %></span><% }); %></div>
+                      <div class="card-footer"><strong><%= formatPrice(item.price) %></strong><div class="card-actions"><a href="/menu/<%= item.id %>">View</a><a href="/menu/<%= item.id %>/edit">Edit</a></div></div>
                     </article>
                   <% }); %>
                 </div>
               <% } else { %>
-                <div class="empty-state"><span>碗</span><h3>搵唔到符合條件嘅菜式</h3><p>試下清除篩選，或者新增一項新菜式。</p><a class="primary-button" href="/menu/new">新增菜式</a></div>
+                <div class="empty-state"><span>0</span><h3>No menu items found</h3><p>Try clearing the filters or add a new item.</p><a class="primary-button" href="/menu/new">Add Menu Item</a></div>
               <% } %>
             </section>
           </div>
         <% } else if (view === 'form') { %>
           <div class="shell narrow-shell form-page">
-            <div class="page-heading"><div><p class="eyebrow"><%= pageEyebrow %></p><h1><%= pageTitle %></h1><p>所有欄位會同時供網頁及 REST API 使用。</p></div><a class="quiet-button" href="/">返回總覽</a></div>
+            <div class="page-heading"><div><p class="eyebrow"><%= pageEyebrow %></p><h1><%= pageTitle %></h1><p>All fields are shared by the website and the RESTful API.</p></div><a class="quiet-button" href="/">Back to Menu</a></div>
             <% if (formError) { %><div class="alert alert-error"><%= formError %></div><% } %>
             <form class="editor-card" action="<%= formAction %>" method="post">
               <section class="form-section">
-                <div class="form-section-title"><span>01</span><div><h2>基本資料</h2><p>名稱、分類及售價</p></div></div>
+                <div class="form-section-title"><span>01</span><div><h2>Basic Information</h2><p>Names, category and price</p></div></div>
                 <div class="form-grid">
-                  <label class="field"><span>中文名稱 *</span><input type="text" name="nameZh" maxlength="80" required value="<%= item.nameZh || '' %>" placeholder="例如：奶油多士"></label>
-                  <label class="field"><span>英文名稱 *</span><input type="text" name="nameEn" maxlength="120" required value="<%= item.nameEn || '' %>" placeholder="Condensed Milk Toast"></label>
-                  <label class="field"><span>分類 *</span><select name="category" required><% categories.forEach((category) => { %><option value="<%= category.key %>" <%= item.category === category.key ? 'selected' : '' %>><%= category.labelZh %> · <%= category.labelEn %></option><% }); %></select></label>
-                  <label class="field"><span>售價（HK$）*</span><input type="number" name="price" min="0" step="0.5" required value="<%= item.price %>"></label>
-                  <label class="field full-field"><span>簡介</span><textarea name="descriptionZh" rows="4" maxlength="500" placeholder="簡短介紹味道、材料或供應方式"><%= item.descriptionZh || '' %></textarea></label>
+                  <label class="field"><span>Chinese Name *</span><input type="text" name="nameZh" maxlength="80" required value="<%= item.nameZh || '' %>" placeholder="例如：奶油多士"></label>
+                  <label class="field"><span>English Name *</span><input type="text" name="nameEn" maxlength="120" required value="<%= item.nameEn || '' %>" placeholder="Condensed Milk Toast"></label>
+                  <label class="field"><span>Category *</span><select name="category" required><% categories.forEach((category) => { %><option value="<%= category.key %>" <%= item.category === category.key ? 'selected' : '' %>><%= category.labelEn %></option><% }); %></select></label>
+                  <label class="field"><span>Price (HK$) *</span><input type="number" name="price" min="0" step="0.5" required value="<%= item.price %>"></label>
+                  <label class="field full-field"><span>Description</span><textarea name="descriptionZh" rows="4" maxlength="500" placeholder="Describe the flavour, ingredients or serving style"><%= item.descriptionZh || '' %></textarea></label>
                 </div>
               </section>
               <section class="form-section">
-                <div class="form-section-title"><span>02</span><div><h2>標籤與致敏原</h2><p>以逗號分隔多個項目</p></div></div>
+                <div class="form-section-title"><span>02</span><div><h2>Tags &amp; Allergens</h2><p>Separate each value with a comma</p></div></div>
                 <div class="form-grid">
-                  <label class="field"><span>標籤</span><input type="text" name="tags" value="<%= Array.isArray(item.tags) ? item.tags.join('，') : item.tags || '' %>" placeholder="招牌，凍飲，人氣"><small>例如：招牌、辣、早餐</small></label>
-                  <label class="field"><span>致敏原</span><input type="text" name="allergens" value="<%= Array.isArray(item.allergens) ? item.allergens.join('，') : item.allergens || '' %>" placeholder="奶類，麩質，蛋類"><small>如沒有，可留空</small></label>
-                  <label class="field"><span>排列次序</span><input type="number" name="sortOrder" step="1" value="<%= item.sortOrder ?? 100 %>"><small>數字越小，越先顯示</small></label>
+                  <label class="field"><span>Tags</span><input type="text" name="tags" value="<%= Array.isArray(item.tags) ? item.tags.join('，') : item.tags || '' %>" placeholder="Signature, Cold drink, Popular"><small>For example: Signature, Spicy, Breakfast</small></label>
+                  <label class="field"><span>Allergens</span><input type="text" name="allergens" value="<%= Array.isArray(item.allergens) ? item.allergens.join('，') : item.allergens || '' %>" placeholder="Dairy, Gluten, Egg"><small>Leave blank if there are none</small></label>
+                  <label class="field"><span>Display Order</span><input type="number" name="sortOrder" step="1" value="<%= item.sortOrder ?? 100 %>"><small>Lower numbers appear first</small></label>
                 </div>
               </section>
               <section class="form-section">
-                <div class="form-section-title"><span>03</span><div><h2>供應設定</h2><p>控制菜單狀態</p></div></div>
+                <div class="form-section-title"><span>03</span><div><h2>Availability Settings</h2><p>Control the item status</p></div></div>
                 <div class="toggle-grid">
-                  <label class="toggle-card"><input type="hidden" name="available" value="false"><input type="checkbox" name="available" <%= item.available ? 'checked' : '' %>><span class="toggle-switch"></span><span><strong>目前供應</strong><small>停用後會顯示「暫停供應」。</small></span></label>
-                  <label class="toggle-card"><input type="hidden" name="featured" value="false"><input type="checkbox" name="featured" <%= item.featured ? 'checked' : '' %>><span class="toggle-switch"></span><span><strong>精選推介</strong><small>在菜式卡片加上「推介」標記。</small></span></label>
+                  <label class="toggle-card"><input type="hidden" name="available" value="false"><input type="checkbox" name="available" <%= item.available ? 'checked' : '' %>><span class="toggle-switch"></span><span><strong>Available now</strong><small>Disabled items appear as unavailable.</small></span></label>
+                  <label class="toggle-card"><input type="hidden" name="featured" value="false"><input type="checkbox" name="featured" <%= item.featured ? 'checked' : '' %>><span class="toggle-switch"></span><span><strong>Featured item</strong><small>Adds a featured label to the menu card.</small></span></label>
                 </div>
               </section>
-              <div class="form-actions"><a class="quiet-button" href="<%= item.id ? `/menu/${item.id}` : '/' %>">取消</a><button class="primary-button" type="submit"><%= submitLabel %></button></div>
+              <div class="form-actions"><a class="quiet-button" href="<%= item.id ? `/menu/${item.id}` : '/' %>">Cancel</a><button class="primary-button" type="submit"><%= submitLabel %></button></div>
             </form>
           </div>
         <% } else if (view === 'details') { %>
           <div class="shell detail-page">
-            <div class="breadcrumb"><a href="/">菜單總覽</a><span>/</span><span><%= item.nameZh %></span></div>
-            <% if (notice) { %><div class="notice-bar"><span class="notice-mark">✓</span><%= notice === 'created' ? '新菜式已加入預覽菜單。' : '菜式資料已更新。' %></div><% } %>
+            <div class="breadcrumb"><a href="/">All Menu Items</a><span>/</span><span><%= item.nameEn %></span></div>
+            <% if (notice) { %><div class="notice-bar"><span class="notice-mark">✓</span><%= notice === 'created' ? 'New item added to the menu.' : 'Menu item updated.' %></div><% } %>
             <article class="detail-card">
-              <div class="detail-visual category-<%= item.category %>"><span class="detail-category"><%= category.labelEn %></span><span class="detail-character"><%= category.icon %></span><span class="detail-price"><%= formatPrice(item.price) %></span><span class="detail-visual-note">香港茶餐廳 · 菜單資料卡</span></div>
+              <div class="detail-visual category-<%= item.category %>"><span class="detail-category"><%= category.labelEn %></span><span class="detail-character"><%= category.icon %></span><span class="detail-price"><%= formatPrice(item.price) %></span><span class="detail-visual-note">HONG KONG CHA CHAAN TENG · MENU CARD</span></div>
               <div class="detail-content">
-                <div class="detail-topline"><span class="category-label category-label-<%= item.category %>"><%= category.labelZh %></span><span class="status-pill <%= item.available ? 'is-on' : 'is-off' %>"><%= item.available ? '供應中' : '暫停供應' %></span><% if (item.featured) { %><span class="featured-label">精選推介</span><% } %></div>
-                <h1><%= item.nameZh %></h1><p class="detail-english"><%= item.nameEn %></p><p class="detail-description"><%= item.descriptionZh || '尚未填寫介紹。' %></p>
-                <dl class="detail-facts"><div><dt>售價</dt><dd><%= formatPrice(item.price) %></dd></div><div><dt>分類</dt><dd><%= category.labelZh %> / <%= category.labelEn %></dd></div><div><dt>排列次序</dt><dd><%= item.sortOrder %></dd></div><div><dt>資料編號</dt><dd class="mono"><%= item.id %></dd></div></dl>
+                <div class="detail-topline"><span class="category-label category-label-<%= item.category %>"><%= category.labelEn %></span><span class="status-pill <%= item.available ? 'is-on' : 'is-off' %>"><%= item.available ? 'Available' : 'Unavailable' %></span><% if (item.featured) { %><span class="featured-label">Featured</span><% } %></div>
+                <h1><%= item.nameZh %></h1><p class="detail-english"><%= item.nameEn %></p><p class="detail-description"><%= item.descriptionZh || 'No description yet.' %></p>
+                <dl class="detail-facts"><div><dt>PRICE</dt><dd><%= formatPrice(item.price) %></dd></div><div><dt>CATEGORY</dt><dd><%= category.labelEn %></dd></div><div><dt>DISPLAY ORDER</dt><dd><%= item.sortOrder %></dd></div><div><dt>ITEM ID</dt><dd class="mono"><%= item.id %></dd></div></dl>
                 <div class="detail-groups">
-                  <div><h2>標籤</h2><div class="detail-tags"><% if (item.tags.length) { %><% item.tags.forEach((tag) => { %><span class="tag"><%= tag %></span><% }); %><% } else { %><span class="muted-text">未設定</span><% } %></div></div>
-                  <div><h2>致敏原</h2><div class="detail-tags allergen-tags"><% if (item.allergens.length) { %><% item.allergens.forEach((allergen) => { %><span class="tag"><%= allergen %></span><% }); %><% } else { %><span class="muted-text">未標示</span><% } %></div></div>
+                  <div><h2>TAGS</h2><div class="detail-tags"><% if (item.tags.length) { %><% item.tags.forEach((tag) => { %><span class="tag"><%= tag %></span><% }); %><% } else { %><span class="muted-text">Not set</span><% } %></div></div>
+                  <div><h2>ALLERGENS</h2><div class="detail-tags allergen-tags"><% if (item.allergens.length) { %><% item.allergens.forEach((allergen) => { %><span class="tag"><%= allergen %></span><% }); %><% } else { %><span class="muted-text">None listed</span><% } %></div></div>
                 </div>
-                <div class="detail-actions"><a class="primary-button" href="/menu/<%= item.id %>/edit">編輯菜式</a><a class="danger-button" href="/menu/<%= item.id %>/delete">刪除菜式</a><a class="quiet-button" href="/">返回總覽</a></div>
+                <div class="detail-actions"><a class="primary-button" href="/menu/<%= item.id %>/edit">Edit Item</a><a class="danger-button" href="/menu/<%= item.id %>/delete">Delete Item</a><a class="quiet-button" href="/">Back to Menu</a></div>
               </div>
             </article>
           </div>
         <% } else if (view === 'delete-confirm') { %>
           <div class="shell error-shell">
-            <p class="error-code">!</p><p class="eyebrow">DELETE MENU ITEM</p><h1>確定刪除「<%= item.nameZh %>」？</h1><p>刪除後不能復原。此操作會同時移除網頁及 REST API 中的資料。</p>
-            <form action="/menu/<%= item.id %>/delete" method="post" class="confirm-actions"><button class="danger-button" type="submit">確定刪除</button><a class="quiet-button" href="/menu/<%= item.id %>">取消</a></form>
+            <p class="error-code">!</p><p class="eyebrow">DELETE MENU ITEM</p><h1>Delete “<%= item.nameZh %>” / “<%= item.nameEn %>”?</h1><p>This action cannot be undone and will remove the item from both the website and the REST API.</p>
+            <form action="/menu/<%= item.id %>/delete" method="post" class="confirm-actions"><button class="danger-button" type="submit">Delete Permanently</button><a class="quiet-button" href="/menu/<%= item.id %>">Cancel</a></form>
           </div>
         <% } else { %>
-          <div class="shell error-shell"><p class="error-code"><%= statusCode %></p><p class="eyebrow">SOMETHING IS OFF THE MENU</p><h1><%= pageTitle %></h1><p><%= message %></p><div class="hero-actions centered-actions"><a class="primary-button" href="/">返回菜單總覽</a><a class="quiet-button" href="/login">重新登入</a></div></div>
+          <div class="shell error-shell"><p class="error-code"><%= statusCode %></p><p class="eyebrow">SOMETHING IS OFF THE MENU</p><h1><%= pageTitle %></h1><p><%= message %></p><div class="hero-actions centered-actions"><a class="primary-button" href="/">Back to Menu</a><a class="quiet-button" href="/login">Sign In Again</a></div></div>
         <% } %>
       </main>
-      <footer class="site-footer"><div class="shell footer-inner"><p>COMP3810SEF · Group 5 · 香港茶餐廳菜單匯總管理</p><p>© <%= currentYear %> 茶記菜單簿</p></div></footer>
+      <footer class="site-footer"><div class="shell footer-inner"><p>COMP3810SEF · Group 5 · Hong Kong Cha Chaan Teng Menu Management</p><p>© <%= currentYear %> Cha Chaan Teng Menu Desk</p></div></footer>
     <% } %>
   </body>
 </html>
