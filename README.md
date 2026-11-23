@@ -13,12 +13,12 @@ The REST API is intentionally public  and includes write and delete operations. 
 
 | Member | Student ID | Workload |
 | --- | --- | --- |
-| HAN Kongdongxu | 13786160 |              |
-|   Chen Junyu   | 13779825 |              |
-| Chan Tsz Ching | 13887258 |              |
-| Keung Hoi Ching | 13882355 |             |
-| So Chi Hin     |   13176891     |                |
-| Cheung Chak Wai |  13884490     |                |
+| HAN Kongdongxu | 13786160 |   Coder      |
+|   Chen Junyu   | 13779825 |    UI tester       |
+| Chan Tsz Ching | 13887258 |    package.json tester       |
+| Keung Hoi Ching | 13882355 |   server.js tester          |
+| So Chi Hin     |   13176891     |    Account Administrator     |
+| Cheung Chak Wai |  13884490     |    UI designer          |
 Group: 5
 
 ## 3. Required technologies and functions
@@ -285,12 +285,12 @@ REST API 刻意不設登入，但包含新增、修改及刪除操作。若未�
 
 | 組員 | Student ID | 分工 |
 | --- | --- | --- |
-| HAN Kongdongxu | 13786160 |       |
-| Chen Junyu | 13779825 |        |
-| Chan Tsz Ching | 13887258 |          |
-| Keung Hoi Ching | 13882355 |         |
-| So Chi Hin    |  13176891   |        |
-| Cheung Chak Wai |  13884490     |        |
+| HAN Kongdongxu | 13786160 |   code編程    |
+| Chen Junyu | 13779825 |   UI測試     |
+| Chan Tsz Ching | 13887258 |   package.json測試       |
+| Keung Hoi Ching | 13882355 |   server.json測試      |
+| So Chi Hin    |  13176891   |  密碼管理      |
+| Cheung Chak Wai |  13884490     |   UI設計     |
 
 Group number: 5
 
