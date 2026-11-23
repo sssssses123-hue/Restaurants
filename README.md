@@ -42,9 +42,9 @@ comp3810sef_group5/
 ├── README.md
 ├── .env.local
 ├── .gitignore
-├── data/menu.json
-├── views/app.ejs
-└── public/styles.css
+├── data/menu.json   --Initial Menu Setting Categories
+├── views/app.ejs  --html interface       
+└── public/styles.css    ---css style
 ```
 
 
@@ -315,9 +315,9 @@ comp3810sef_group5/
 ├── README.md
 ├── .env.local
 ├── .gitignore
-├── data/menu.json
-├── views/app.ejs
-└── public/styles.css
+├── data/menu.json  --初始菜單設定種類
+├── views/app.ejs   --HTML網頁
+└── public/styles.css   ---css樣式
 ```
 
 ## 5. Facebook 登入
